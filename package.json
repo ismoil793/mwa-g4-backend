@@ -4,7 +4,8 @@
   "description": "Automobile Selling Website",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,9 @@
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.21"
+    "husky": "^7.0.0",
+    "lint-staged": "^13.2.0",
+    "nodemon": "^2.0.21",
+    "prettier": "^2.8.4"
   }
 }
