@@ -1,11 +1,12 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const automobileSchema = new mongoose.Schema({
-    title: {type: String, required: true},
+const automobileSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
     description: String,
     owner: {
-        ownerId: mongoose.Schema.Types.ObjectId,
-        fullName: String
+      ownerId: mongoose.Schema.Types.ObjectId,
+      fullName: String,
     },
     color: String,
     interiorColor: String,
@@ -13,13 +14,15 @@ const automobileSchema = new mongoose.Schema({
     type: String,
     price: Number,
     pictures: {
-        primary: String,
-        interior: String
-    }
-}, {
-    timestamps: true
-})
+      primary: String,
+      interior: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const automobileModel = mongoose.model('automobile', automobileSchema)
+const automobileModel = mongoose.model("automobile", automobileSchema);
 
-module.exports = automobileModel
+module.exports = automobileModel;
