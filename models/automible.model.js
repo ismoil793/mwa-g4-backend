@@ -13,10 +13,11 @@ const automobileSchema = new mongoose.Schema(
     vin: Number,
     type: String,
     price: Number,
-    pictures: {
-      primary: String,
-      interior: String,
-    },
+    pictures: [
+      {
+        fileName: String,
+      },
+    ],
     location: [String, String], //long, lat
   },
   {
