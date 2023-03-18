@@ -11,6 +11,7 @@ const automobileSchema = new mongoose.Schema({
     interiorColor: String,
     vin: Number,
     type: String,
+    price: Number,
     pictures: {
         primary: String,
         interior: String

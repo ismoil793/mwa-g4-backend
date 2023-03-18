@@ -19,7 +19,18 @@ async function addAutomobile(req, res, next) {
     }
 }
 
+async function getAutoById(req, res, next) {
+    try {
+        const { auto_id: autoId } = req.params
+        const result = await Automobile.findOne({_id: autoId})
+        res.json({data: result})
+    } catch (e) {
+        next(e)
+    }
+}
+
 module.exports = {
     getAllAutomobiles,
-    addAutomobile
+    addAutomobile,
+    getAutoById
 }
