@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cors = require("cors");
 const favicon = require("serve-favicon");
-const cors = require("cors");
 require("dotenv").config();
 
 const MONGODB_URI = process.env.MONGODB_URI;
