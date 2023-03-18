@@ -29,8 +29,22 @@ async function getAutoById(req, res, next) {
     }
 }
 
+async function updateAutoById(req, res, next) {
+    try {
+        const { auto_id: autoId } = req.params
+        const result = await Automobile.updateOne(
+            {_id: autoId},
+            {_id: autoId, ...req.body}
+        )
+        res.json({data: result})
+    } catch (e) {
+        next(e)
+    }
+}
+
 module.exports = {
     getAllAutomobiles,
     addAutomobile,
-    getAutoById
+    getAutoById,
+    updateAutoById
 }
