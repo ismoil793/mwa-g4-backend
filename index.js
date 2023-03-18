@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const favicon = require("serve-favicon");
+const cors = require("cors");
 require("dotenv").config();
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -13,6 +14,7 @@ const verifyJwtToken = require("./middlewares/user.autherization.js");
 const automobileRouter = require("./routers/automobile.router");
 
 const app = express();
+app.use(cors());
 
 (async function () {
   try {
