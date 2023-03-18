@@ -41,7 +41,7 @@ module.exports.singup = async (req, res, next) => {
       newUser.password = passHash;
       const result = await newUser.save();
       console.log("new user saved result: ", result);
-      res.json({ success: true, data: result });
+      res.json(createJWTokenAndResponseData(result));
     } else {
       res.json({
         success: false,
