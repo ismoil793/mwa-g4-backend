@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const automobileSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
-    description: String,
+    title: { type: String, required: true }, // text indexing
+    description: String, // text indexing
     owner: {
       ownerId: mongoose.Schema.Types.ObjectId,
       fullName: String,
@@ -17,6 +17,7 @@ const automobileSchema = new mongoose.Schema(
       primary: String,
       interior: String,
     },
+    location: [String, String], //long, lat
   },
   {
     timestamps: true,
