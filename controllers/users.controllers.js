@@ -35,7 +35,8 @@ module.exports.singup = async (req, res, next) => {
   try {
     console.log("singup - body: ", req.body);
     const newUser = new Users(req.body);
-    if (!isUserEmailExistsInDb(newUser)) {
+    const isUserExist = await isUserEmailExistInDb(newUser);
+    if (!isUserExist) {
       const passHash = await bcrypt.hash(newUser.password, saltRounds);
       newUser.password = passHash;
       const result = await newUser.save();
@@ -99,11 +100,16 @@ async function isMatchedPasswordHash(password, user) {
   }
 }
 
-async function isUserEmailExistsInDb(newUser) {
+async function isUserEmailExistInDb(newUser) {
   try {
     const oldUser = await Users.findOne({ email: newUser.email });
-    if (oldUser) return true;
-    else return false;
+    console.log('isUserEmailExistsInDb() - oldUser', oldUser)
+    if (oldUser != null && oldUser.email === newUser.email) {
+      console.log('email exists')
+      return true;
+    }
+    else
+      return false;
   } catch (err) {
     next(err);
   }
