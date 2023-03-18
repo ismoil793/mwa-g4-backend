@@ -3,8 +3,8 @@ const fs = require("fs");
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
-const favicon = require("serve-favicon");
 const cors = require("cors");
+const favicon = require("serve-favicon");
 require("dotenv").config();
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -26,7 +26,7 @@ app.use(cors());
 })();
 
 app.disable("x-powered-by");
-
+app.use(cors());
 app.use(
   morgan("common", {
     stream: fs.createWriteStream("./access.log", { flags: "a" }),
@@ -48,9 +48,11 @@ app.all("*", (req, res, next) => {
 
 app.use((error, req, res, next) => {
   const status = error.status || 500;
-  res
-    .status(status || 500)
-    .json({ success: false, data: error.message, status });
+  res.status(status || 500).json({
+    success: false,
+    data: error.message,
+    status,
+  });
 });
 
-app.listen(8080, () => console.log(`listening on 8080`));
+app.listen(3001, () => console.log(`listening on 3000`));

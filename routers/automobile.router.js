@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require("express");
 const {
     getAllAutomobiles,
     addAutomobile,
@@ -6,7 +6,7 @@ const {
     updateAutoById,
 } = require('../controllers/automobile.controller')
 
-const router = express.Router()
+const router = express.Router();
 
 router.get('/', getAllAutomobiles) // GET /automobiles
 router.post('/', addAutomobile)
@@ -16,4 +16,4 @@ router.put('/:auto_id', updateAutoById)
 // router.post('/:auto_id/upload')
 // router.get('/:auto_id/images')
 
-module.exports = router
+module.exports = router;
