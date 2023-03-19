@@ -29,8 +29,18 @@ async function getAutoById(req, res, next) {
     }
 }
 
+async function getMyAutomobiles(req, res, next) {
+    try {
+        const automobiles = await Automobile.find({})
+        res.json({data: automobiles})
+    } catch (e) {
+        next(e)
+    }
+}
+
 module.exports = {
     getAllAutomobiles,
     addAutomobile,
-    getAutoById
+    getAutoById,
+    getMyAutomobiles
 }
