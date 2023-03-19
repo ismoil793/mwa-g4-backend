@@ -43,8 +43,11 @@ async function updateAutoById(req, res, next) {
 }
 
 async function getMyAutomobiles(req, res, next) {
+
+  const { user_id }= req.params;
+
   try {
-    const automobiles = await Automobile.find({});
+    const automobiles = await Automobile.find({"owner.ownerId": user_id});
     res.json({ data: automobiles });
   } catch (e) {
     next(e);
