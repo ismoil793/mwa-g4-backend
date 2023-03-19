@@ -27,7 +27,7 @@ const automobileSchema = new mongoose.Schema(
         comment: String,
       },
     ],
-    status: String, //  "sold"
+    status: String, //  "Sold"
   },
   {
     timestamps: true,
