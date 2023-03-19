@@ -1,18 +1,18 @@
 
-GET http://localhost:8080/api/v1/users
+GET http://localhost:3001/api/v1/users
 Content-Type: application/json
 Authorization: Bearer xxx
 
 
 ###
-POST  http://localhost:8080/api/v1/users/signup
+POST  http://localhost:3001/api/v1/users/signup
 Content-Type: application/json
 
 {  "email": "biruk@miu.edu", "password": "123", "fullname": "Biruk Yemane" }
 
 
 ###
-POST  http://localhost:8080/api/v1/users/login
+POST  http://localhost:3001/api/v1/users/login
 Content-Type: application/json
 
 {  "email": "zaman@miu.edu", "password": "123" }
@@ -20,5 +20,5 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/v1
+GET http://localhost:3001/v1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiX2lkIjoiaW5pdCIsImVtYWlsIjoiaW5pdCIsInBhc3N3b3JkIjoiaW5pdCIsImZ1bGxuYW1lIjoiaW5pdCIsIl9fdiI6ImluaXQifSwic3RhdGVzIjp7ImluaXQiOnsiX2lkIjp0cnVlLCJlbWFpbCI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImZ1bGxuYW1lIjp0cnVlLCJfX3YiOnRydWV9fX0sInNraXBJZCI6dHJ1ZX0sIiRpc05ldyI6ZmFsc2UsIl9kb2MiOnsiX2lkIjoiNjQxNTE5ZWNlNmUxMjhkYTg1YmQ5NDVjIiwiZW1haWwiOiJ6YW1hbkBtaXUuZWR1IiwicGFzc3dvcmQiOiIkMmIkMTAkQnk1cWttUVRkaHBvZHNFd1REQnBqT2RMVS9RSEt4cTkuSEUzNGhMNGNiM2pndktHbW9EaEMiLCJmdWxsbmFtZSI6Im1vbmlyIHphbWFuIiwiX192IjowfSwicGFzc3dvcmQiOm51bGwsImlhdCI6MTY3OTEwNDk5MX0.15bY8rPAVmXUELebyaEReRqhPbTrmEo3msZzAiJBt4w

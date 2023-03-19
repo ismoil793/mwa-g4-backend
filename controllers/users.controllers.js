@@ -78,18 +78,18 @@ module.exports.getUserById = async (req, res, next) => {
 function createJWTokenAndResponseData(user) {
   console.log("createJWTokenAndResponseData()", user);
 
-  const userTokenInfo = { email: user.email, fullname: user.fullname };
+  const userTokenInfo = { _id: user._id, email: user.email, fullname: user.fullname };
 
   userTokenInfo.jwt = jwt.sign({ ...userTokenInfo }, JWT_SIGN_SECRET);
 
   return {
-    sucess: true,
+    success: true,
     data: userTokenInfo,
   };
 }
 
 function createInvalidUserResponseData() {
-  return { sucess: false, data: { msg: "Invalid email or password." } };
+  return { success: false, data: { msg: "Invalid email or password." } };
 }
 
 async function isMatchedPasswordHash(password, user) {
