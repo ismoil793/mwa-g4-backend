@@ -3,7 +3,6 @@ const JWT_SIGN_SECRET = process.env.JWT_SIGN_SECRET;
 
 module.exports = async (req, res, next) => {
   try {
-    console.log("authorizeUser()-headers: ", req.headers);
     //for dev skip this verification
     //next();
     //working code: use this middleware in production
