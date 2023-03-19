@@ -83,3 +83,42 @@ module.exports.updateStatus = async (req, res, next) => {
     next(e);
   }
 };
+
+module.exports.updateStatusAndOwner = async (req, res, next) => {
+  try {
+    const { auto_id, offer_id } = req.params;
+    const updateOffer = req.body; // status, fullname: ,  userId
+
+    console.log(updateOffer);
+    const result = await Automobile.updateOne(
+      { _id: auto_id, "offers._id": offer_id },
+      {
+        $set: {
+          "offers.$.status": updateOffer.status,
+        },
+      }
+    );
+    await Automobile.updateOne(
+      { _id: auto_id },
+      {
+        $set: {
+          status: "Sold",
+        },
+      }
+    );
+
+    // const result = await Automobile.updateOne(
+    //     { _id: auto_id },
+    //     {
+    //         $set: {
+    //             //"owner.ownerId": updateOffer.userId,
+    //             "owner.fullName": updateOffer.fullname,
+    //         },
+    //     }
+    // );
+
+    res.json({ success: true, data: result });
+  } catch (e) {
+    next(e);
+  }
+};
