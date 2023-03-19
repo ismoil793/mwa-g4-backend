@@ -19,6 +19,15 @@ const automobileSchema = new mongoose.Schema(
       },
     ],
     location: [String, String], //long, lat
+    offers: [
+      {
+        userId: mongoose.Schema.Types.ObjectId,
+        fullname: String,
+        status: String, //approved, reject, none
+        comment: String,
+      },
+    ],
+    status: String, //  "sold"
   },
   {
     timestamps: true,
