@@ -13,3 +13,9 @@ Content-Type: application/json
   "vin": 1234,
   "type": "Sedan"
 }
+
+###
+GET http://localhost:3001/api/v1/automobiles/6415b4320d4d011d04748b69/offers
+
+###
+GET http://localhost:3001/api/v1/automobiles/6415b4320d4d011d04748b69/offers/64170f4e1b045b9731423852
