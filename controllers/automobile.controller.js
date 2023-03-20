@@ -10,13 +10,13 @@ async function getAllAutomobiles(req, res, next) {
 }
 
 async function addAutomobile(req, res, next) {
-  try {
-    const payload = req.body;
-    const result = await Automobile.create(payload);
-    res.json({ data: result });
-  } catch (e) {
-    next(e);
-  }
+    try {
+        const {long, lat, ...payload} = req.body
+        const result = await Automobile.create({...payload, location: [long, lat]})
+        res.json({data: result})
+    } catch (e) {
+        next(e)
+    }
 }
 
 async function getAutoById(req, res, next) {
@@ -30,16 +30,42 @@ async function getAutoById(req, res, next) {
 }
 
 async function updateAutoById(req, res, next) {
-  try {
-    const { auto_id: autoId } = req.params;
-    const result = await Automobile.updateOne(
-      { _id: autoId },
-      { _id: autoId, ...req.body }
-    );
-    res.json({ data: result });
-  } catch (e) {
-    next(e);
-  }
+    try {
+        const { auto_id: autoId } = req.params
+        const {long, lat, ...payload} = req.body
+        const result = await Automobile.updateOne(
+            {_id: autoId},
+            {_id: autoId, ...payload, location: [long, lat]}
+        )
+        res.json({data: result})
+    } catch (e) {
+        next(e)
+    }
+}
+
+async function deleteAutoById(req, res, next) {
+    try {
+        const { auto_id: autoId } = req.params
+        const result = await Automobile.deleteOne({_id: autoId})
+        res.json({data: result})
+    } catch (e) {
+        next(e)
+    }
+}
+
+async function uploadImage(req, res, next) {
+    try {
+        const {auto_id: autoId} = req.params
+        const files = req.files.map(file => ({fileName: file.filename}))
+
+        const result = await Automobile.updateOne(
+            {_id: autoId},
+            {$addToSet: {pictures: {$each: files}}}
+        )
+        res.json({data: result})
+    } catch (e) {
+        next(e)
+    }
 }
 
 async function getMyAutomobiles(req, res, next) {
@@ -55,9 +81,11 @@ async function getMyAutomobiles(req, res, next) {
 }
 
 module.exports = {
-  getAllAutomobiles,
-  addAutomobile,
-  getAutoById,
-  updateAutoById,
-  getMyAutomobiles
-};
+    getAllAutomobiles,
+    addAutomobile,
+    getAutoById,
+    updateAutoById,
+    deleteAutoById,
+    uploadImage,
+    getMyAutomobiles
+}
