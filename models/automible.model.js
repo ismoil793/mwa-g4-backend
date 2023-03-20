@@ -25,7 +25,7 @@ const automobileSchema = new mongoose.Schema(
     offers: [
       {
         userId: mongoose.Schema.Types.ObjectId,
-        fullname: String,
+        fullName: String,
         status: String, //approved, reject, none
         comment: String,
       },
