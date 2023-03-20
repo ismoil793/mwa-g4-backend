@@ -3,7 +3,10 @@ const { default: mongoose } = require("mongoose");
 
 async function getAllAutomobiles(req, res, next) {
   try {
-    const automobiles = await Automobile.find({});
+    const { _id: ownerId } = req.user;
+    const automobiles = await Automobile.find({
+      "owner.ownerId": { $ne: new mongoose.Types.ObjectId(ownerId) },
+    });
     res.json({ data: automobiles });
   } catch (e) {
     next(e);
@@ -13,10 +16,10 @@ async function getAllAutomobiles(req, res, next) {
 async function addAutomobile(req, res, next) {
   try {
     const { long, lat, ...payload } = req.body;
-    const {_id: ownerId, fullname: fullName} = req.user
+    const { _id: ownerId, fullname: fullName } = req.user;
     const result = await Automobile.create({
       ...payload,
-      owner: {ownerId: new mongoose.Types.ObjectId(ownerId), fullName },
+      owner: { ownerId: new mongoose.Types.ObjectId(ownerId), fullName },
       location: [long, lat],
     });
     res.json({ data: result });
@@ -39,14 +42,14 @@ async function updateAutoById(req, res, next) {
   try {
     const { auto_id: autoId } = req.params;
     const { long, lat, ...payload } = req.body;
-    const {_id: ownerId, fullname: fullName} = req.user
+    const { _id: ownerId, fullname: fullName } = req.user;
     const result = await Automobile.updateOne(
       { _id: autoId },
       {
         _id: autoId,
         ...payload,
         location: [long, lat],
-        owner: {ownerId: new mongoose.Types.ObjectId(ownerId), fullName }
+        owner: { ownerId: new mongoose.Types.ObjectId(ownerId), fullName },
       }
     );
     res.json({ data: result });
@@ -118,16 +121,16 @@ async function autoPurchasedList(req, res, next) {
 async function searchAutomobiles(req, res, next) {
   const { search_query } = req.body;
   try {
-    console.log('search_query: ', search_query);
+    console.log("search_query: ", search_query);
 
     const automobiles = await Automobile.find({
-            $or: [
-        { "title": new RegExp(search_query, "gi") },
-        { "description": new RegExp(search_query, "gi") },
-        { "color": new RegExp(search_query, "gi") },
-        { "type": new RegExp(search_query, "gi") },
-            ]
-        });
+      $or: [
+        { title: new RegExp(search_query, "gi") },
+        { description: new RegExp(search_query, "gi") },
+        { color: new RegExp(search_query, "gi") },
+        { type: new RegExp(search_query, "gi") },
+      ],
+    });
 
     res.json({ data: automobiles });
   } catch (e) {
@@ -138,8 +141,7 @@ async function searchAutomobiles(req, res, next) {
 async function searchNearByAutomobiles(req, res, next) {
   const { long, lat } = req.body;
   try {
-
-      //TODO: need to implement near by 
+    //TODO: need to implement near by
 
     //Fairfield, IA, USA
     //Latitude and longitude coordinates are: 41.006950, -91.973419
@@ -152,18 +154,16 @@ async function searchNearByAutomobiles(req, res, next) {
     //   location:
     //     { $near: [currentLong, currentLat] }
     // }).limit(20);
-  
+
     //TODO: this for testing -- remove this block
-    const automobiles = await Automobile.find({$or: [
-        { "title": new RegExp("Honda", "gi") },
-            ]});
+    const automobiles = await Automobile.find({
+      $or: [{ title: new RegExp("Honda", "gi") }],
+    });
     res.json({ data: automobiles });
   } catch (e) {
     next(e);
   }
 }
-
-
 
 module.exports = {
   getAllAutomobiles,
@@ -175,5 +175,5 @@ module.exports = {
   uploadImage,
   getMyAutomobiles,
   autoPurchasedList,
-  searchNearByAutomobiles
+  searchNearByAutomobiles,
 };
