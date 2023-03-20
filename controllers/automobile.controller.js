@@ -127,16 +127,28 @@ async function searchAutomobiles(req, res, next) {
   }
 }
 
-async function searchNearBy(req, res, next) {
+async function searchNearByAutomobiles(req, res, next) {
   const { long, lat } = req.body;
   try {
-    console.log('long: ' + long + ', lat: ' + lat);
 
-    const automobiles = await Automobile.find({
-      location:
-        { $near: [currentLong, currentLat] }
-    }).limit(20);
+      //TODO: need to implement near by 
 
+    //Fairfield, IA, USA
+    //Latitude and longitude coordinates are: 41.006950, -91.973419
+    //     Ottumwa, IA, USA
+    // Latitude and longitude coordinates are: 41.016621, -92.430550.
+    // console.log('long: ' + long + ', lat: ' + lat);
+    // const currentLong = "-91.973419"
+    // const currentLat = "41.006950"
+    // const automobiles = await Automobile.find({
+    //   location:
+    //     { $near: [currentLong, currentLat] }
+    // }).limit(20);
+  
+    //TODO: this for testing -- remove this block
+    const automobiles = await Automobile.find({$or: [
+        { "title": new RegExp("Honda", "gi") },
+            ]});
     res.json({ data: automobiles });
   } catch (e) {
     next(e);
@@ -155,4 +167,5 @@ module.exports = {
   uploadImage,
   getMyAutomobiles,
   autoPurchasedList,
+  searchNearByAutomobiles
 };
