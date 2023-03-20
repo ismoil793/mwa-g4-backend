@@ -19,3 +19,8 @@ GET http://localhost:3001/api/v1/automobiles/6415b4320d4d011d04748b69/offers
 
 ###
 GET http://localhost:3001/api/v1/automobiles/6415b4320d4d011d04748b69/offers/64170f4e1b045b9731423852
+
+
+###
+GET http://localhost:3001/api/v1/automobiles/purchased
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDE1MTllY2U2ZTEyOGRhODViZDk0NWMiLCJlbWFpbCI6InphbWFuQG1pdS5lZHUiLCJmdWxsbmFtZSI6Im1vbmlyIHphbWFuIiwiaWF0IjoxNjc5MjU3ODg5fQ.7Rp4Rik8e--dPRmxFojBOQHaWM_ss5Sm4oCKijofXe0
