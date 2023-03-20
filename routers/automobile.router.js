@@ -11,6 +11,7 @@ const {
   deleteAutoById,
   uploadImage,
   autoPurchasedList,
+  searchNearByAutomobiles,
 } = require("../controllers/automobile.controller");
 const offersRouter = require("./offers.router");
 
@@ -40,6 +41,7 @@ router.get("/myAutomobiles", getMyAutomobiles);
 router.get("/:auto_id", getAutoById);
 router.put("/:auto_id", updateAutoById);
 router.post("/search", searchAutomobiles);
+router.get("/search/nearby", searchNearByAutomobiles);
 router.delete("/:auto_id", deleteAutoById);
 router.post("/:auto_id/upload", upload.array("picture", 4), uploadImage);
 router.get("/purchased", autoPurchasedList);
