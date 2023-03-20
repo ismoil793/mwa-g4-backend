@@ -5,6 +5,7 @@ GET http://localhost:3001/api/v1/automobiles
 POST http://localhost:3001/api/v1/automobiles
 Content-Type: application/json
 
+
 {
   "title": "Toyota Camry GLE 2009",
   "description": "Really good quality car",
@@ -13,3 +14,10 @@ Content-Type: application/json
   "vin": 1234,
   "type": "Sedan"
 }
+
+###
+
+POST http://localhost:3001/api/v1/automobiles/search
+Content-Type: application/json
+
+{"search_query": "white"}

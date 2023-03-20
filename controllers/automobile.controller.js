@@ -54,10 +54,49 @@ async function getMyAutomobiles(req, res, next) {
   }
 }
 
+async function searchAutomobiles(req, res, next) {
+  const { search_query } = req.body;
+  try {
+    console.log('search_query: ', search_query);
+
+    const automobiles = await Automobile.find({
+            $or: [
+        { "title": new RegExp(search_query, "gi") },
+        { "description": new RegExp(search_query, "gi") },
+        { "color": new RegExp(search_query, "gi") },
+        { "type": new RegExp(search_query, "gi") },
+            ]
+        });
+
+    res.json({ data: automobiles });
+  } catch (e) {
+    next(e);
+  }
+}
+
+async function searchNearBy(req, res, next) {
+  const { long, lat } = req.body;
+  try {
+    console.log('long: ' + long + ', lat: ' + lat);
+
+    const automobiles = await Automobile.find({
+      location:
+        { $near: [currentLong, currentLat] }
+    }).limit(20);
+
+    res.json({ data: automobiles });
+  } catch (e) {
+    next(e);
+  }
+}
+
+
+
 module.exports = {
   getAllAutomobiles,
   addAutomobile,
   getAutoById,
   updateAutoById,
-  getMyAutomobiles
+  getMyAutomobiles,
+  searchAutomobiles
 };
