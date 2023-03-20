@@ -18,6 +18,9 @@ const automobileSchema = new mongoose.Schema(
         fileName: String,
       },
     ],
+    state: String,
+    city: String,
+    zipcode: Number,
     location: [String, String], //long, lat
     offers: [
       {
