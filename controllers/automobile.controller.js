@@ -69,11 +69,11 @@ async function uploadImage(req, res, next) {
 }
 
 async function getMyAutomobiles(req, res, next) {
-
-  const { user_id }= req.params;
+  console.log('req.params', req.user)
+  const { _id }= req.user;
 
   try {
-    const automobiles = await Automobile.find({"owner.ownerId": user_id});
+    const automobiles = await Automobile.find({"owner.ownerId": _id});
     res.json({ data: automobiles });
   } catch (e) {
     next(e);
