@@ -1,4 +1,5 @@
 const Automobile = require("../models/automible.model");
+const mongoose = require("mongoose");
 
 module.exports.getAllOffers = async (req, res, next) => {
   try {
@@ -25,7 +26,8 @@ module.exports.getAllOffers = async (req, res, next) => {
 module.exports.addOffer = async (req, res, next) => {
   try {
     const { auto_id } = req.params;
-    const newOffer = req.body;
+    const {comment} = req.body;
+    const {_id: userId, fullname: fullName} = req.user
     /**
          * body json type
          * {
@@ -37,8 +39,14 @@ module.exports.addOffer = async (req, res, next) => {
          */
     const result = await Automobile.updateOne(
       { _id: auto_id },
-      { $push: { offers: { ...newOffer } } }
-    );
+      { $push: { offers:
+              {
+                comment,
+                status: '',
+                userId: new mongoose.Types.ObjectId(userId),
+                fullName
+              }
+      }});
 
     res.json({ success: true, data: result });
   } catch (e) {
