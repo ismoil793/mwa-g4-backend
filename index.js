@@ -12,6 +12,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 const usersRouter = require("./routers/users.router.js");
 const verifyJwtToken = require("./middlewares/user.autherization.js");
 const automobileRouter = require("./routers/automobile.router");
+const profileRouter = require("./routers/profile.router");
 
 const app = express();
 app.use(cors());
@@ -39,6 +40,7 @@ app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
 app.use(express.json());
 
 app.use("/api/v1/users", usersRouter);
+app.use("/api/v1/profile", verifyJwtToken, profileRouter);
 app.use("/api/v1/automobiles", verifyJwtToken, automobileRouter);
 
 app.all("*", (req, res, next) => {
