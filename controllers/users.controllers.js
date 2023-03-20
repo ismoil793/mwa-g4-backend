@@ -75,6 +75,18 @@ module.exports.getUserById = async (req, res, next) => {
   }
 };
 
+module.exports.updateUser = async (req, res, next) => {
+  try {
+    if(!req.user) throw new Error("test -update JWT verification is failed. JWT token is required.");
+    const { user_id } = req.user;
+    console.log("udateUser() - user_id: ", user_id);
+    const result = await Users.updateOne({ _id: user_id },req.body);
+    res.json({ sucess: true, data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
 function createJWTokenAndResponseData(user) {
   console.log("createJWTokenAndResponseData()", user);
 
