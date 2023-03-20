@@ -37,12 +37,12 @@ const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 router.get("/", getAllAutomobiles); // GET /automobiles
 router.post("/", addAutomobile);
 router.get("/myAutomobiles", getMyAutomobiles);
+router.get("/purchased", autoPurchasedList);
 router.get("/:auto_id", getAutoById);
 router.put("/:auto_id", updateAutoById);
 router.post("/search", searchAutomobiles);
 router.delete("/:auto_id", deleteAutoById);
 router.post("/:auto_id/upload", upload.array("picture", 4), uploadImage);
-router.get("/purchased", autoPurchasedList);
 
 router.use("/:auto_id/offers/", offersRouter);
 module.exports = router;
