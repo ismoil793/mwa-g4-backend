@@ -7,6 +7,7 @@ const {
   getAutoById,
   getMyAutomobiles,
   updateAutoById,
+  searchAutomobiles,
   deleteAutoById,
   uploadImage,
   autoPurchasedList,
@@ -38,6 +39,7 @@ router.post("/", addAutomobile);
 router.get("/myAutomobiles", getMyAutomobiles);
 router.get("/:auto_id", getAutoById);
 router.put("/:auto_id", updateAutoById);
+router.post("/search", searchAutomobiles);
 router.delete("/:auto_id", deleteAutoById);
 router.post("/:auto_id/upload", upload.array("picture", 4), uploadImage);
 router.get("/purchased", autoPurchasedList);
