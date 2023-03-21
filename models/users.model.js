@@ -4,8 +4,7 @@ const userSchema = mongoose.Schema({
   email: String,
   password: String,
   fullname: String,
-  location: [String, String],
-  location2: {
+  location: {
     type: {
       type: String, // Don't do `{ location: { type: String } }`
       enum: ['Point'], // 'location.type' must be 'Point'
@@ -19,7 +18,7 @@ const userSchema = mongoose.Schema({
   }
 });
 
-userSchema.index({location2: '2dsphere'});
+userSchema.index({location: '2dsphere'});
 
 module.exports = mongoose.model("Users", userSchema);
 

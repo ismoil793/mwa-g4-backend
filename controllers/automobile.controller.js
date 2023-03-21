@@ -19,10 +19,11 @@ async function addAutomobile(req, res, next) {
   try {
     const { long, lat, ...payload } = req.body;
     const { _id: ownerId, fullname: fullName } = req.user;
+    const location = { type: "Point", coordinates: [long, lat]}
     const result = await Automobile.create({
       ...payload,
       owner: { ownerId: new mongoose.Types.ObjectId(ownerId), fullName },
-      location: [long, lat],
+      location,
     });
     res.json({ data: result });
   } catch (e) {
@@ -45,12 +46,13 @@ async function updateAutoById(req, res, next) {
     const { auto_id: autoId } = req.params;
     const { long, lat, ...payload } = req.body;
     const { _id: ownerId, fullname: fullName } = req.user;
+    const location = { type: "Point", coordinates: [long, lat]}
     const result = await Automobile.updateOne(
       { _id: autoId },
       {
         _id: autoId,
         ...payload,
-        location: [long, lat],
+        location,
         owner: { ownerId: new mongoose.Types.ObjectId(ownerId), fullName },
       }
     );
@@ -152,23 +154,23 @@ async function searchNearByAutomobiles(req, res, next) {
     const user = await Users.findOne({ _id: req.user._id });
   
     console.log('searchNearByAutomobiles user from db: ', user);
-    console.log('users long-lat: ' + user.location2.coordinates);
+    console.log('users long-lat: ' + user.location?.coordinates);
 
     //Fairfield long, lat default 
     let long = -91.973419;
     let lat = 41.006950;
-    if (user.location2.coordinates && user.location2.coordinates.length > 0) {
-      long = parseFloat(user.location2.coordinates[0]);
-      lat = parseFloat(user.location2.coordinates[1]);
+    if (user.location?.coordinates && user.location?.coordinates?.length > 0) {
+      long = parseFloat(user.location.coordinates[0]);
+      lat = parseFloat(user.location.coordinates[1]);
     }
-  
-    let automobiles = await Automobile.find({location2: {
+    //  1 mile ==== 1609.34 meter
+    let automobiles = await Automobile.find({location: {
         $near: {
             $geometry:{ 
                 type: "Point", 
                 coordinates: [long, lat],
-                $minDistance: 0,
-                $maxDistance: 500000
+                $minDistance: 0, 
+                $maxDistance: 1609.34 * 25 //meter - 25mile
               }
             }
         }})

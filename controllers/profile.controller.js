@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const automobileModel = require("../models/automible.model");
 const { updateUser } = require("./users.controllers.js");
 
+
 module.exports.updateUser = async (req, res, next) => {
   try {
     const { _id } = req.user;
@@ -10,7 +11,7 @@ module.exports.updateUser = async (req, res, next) => {
     const updatedUser = {
       ...req.body,
       ...{
-        location2: {
+        location: {
           type: "Point",
           coordinates: [longitude, latitude],
         },

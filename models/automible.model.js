@@ -21,18 +21,17 @@ const automobileSchema = new mongoose.Schema(
     state: String,
     city: String,
     zipcode: Number,
-    location: [String, String], //long, lat
-    location2: {
-      type: {
-        type: String, // Don't do `{ location: { type: String } }`
-        enum: ["Point"], // 'location.type' must be 'Point'
-        required: false,
-      },
-      coordinates: {
-        type: [Number],
-        required: false,
-        sparse: true,
-      },
+    location: {
+        type: {
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'], // 'location.type' must be 'Point'
+            required: false
+        },
+        coordinates: {
+            type: [Number],
+            required: false,
+            sparse: true,
+        }
     },
     offers: [
       {
@@ -49,7 +48,8 @@ const automobileSchema = new mongoose.Schema(
   }
 );
 
-automobileSchema.index({ location2: "2dsphere" });
+automobileSchema.index({ location: '2dsphere' });
+automobileSchema.index({title: 1, description: 1, color: 1, type: 1});
 
 const automobileModel = mongoose.model("automobile", automobileSchema);
 
