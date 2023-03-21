@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const automobileModel = require("../models/automible.model");
+const Users = require("../models/users.model");
 const { updateUser } = require("./users.controllers.js");
-
 
 module.exports.updateUser = async (req, res, next) => {
   try {
@@ -32,14 +32,17 @@ module.exports.userStat = async (req, res, next) => {
     console.log("user id aggregate", _id);
 
     const ids = [];
-    ids.push(new mongoose.Types.ObjectId(_id))
+    ids.push(new mongoose.Types.ObjectId(_id));
 
     const result = await automobileModel.aggregate([
-      { $match: { "owner.ownerId": { "$in": ids }, status:"Sold" } },
-      {$group: {
-        _id: "$owner.ownerId",
-        total_sales: { $sum: "$price" },
-        count: {$sum: 1} }}
+      { $match: { "owner.ownerId": { $in: ids }, status: "Sold" } },
+      {
+        $group: {
+          _id: "$owner.ownerId",
+          total_sales: { $sum: "$price" },
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     /*
