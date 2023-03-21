@@ -19,7 +19,7 @@ module.exports.updateUser = async (req, res, next) => {
       },
       }
     } 
-
+    console.log('updateUser ', updateUser)
     const result = await Users.updateOne({ _id: _id }, updatedUser);
 
     res.json({ success: true, data: result });
