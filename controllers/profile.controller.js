@@ -35,7 +35,7 @@ module.exports.userStat = async (req, res, next) => {
     ids.push(new mongoose.Types.ObjectId(_id))
 
     const result = await automobileModel.aggregate([
-      { $match: { "owner.ownerId": { "$in": ids } } },
+      { $match: { "owner.ownerId": { "$in": ids }, status:"Sold" } },
       {$group: {
         _id: "$owner.ownerId",
         total_sales: { $sum: "$price" },
