@@ -154,23 +154,23 @@ async function searchNearByAutomobiles(req, res, next) {
     const user = await Users.findOne({ _id: req.user._id });
   
     console.log('searchNearByAutomobiles user from db: ', user);
-    console.log('users long-lat: ' + user.location2.coordinates);
+    console.log('users long-lat: ' + user.location?.coordinates);
 
     //Fairfield long, lat default 
     let long = -91.973419;
     let lat = 41.006950;
-    if (user.location2.coordinates && user.location2.coordinates.length > 0) {
-      long = parseFloat(user.location2.coordinates[0]);
-      lat = parseFloat(user.location2.coordinates[1]);
+    if (user.location?.coordinates && user.location?.coordinates?.length > 0) {
+      long = parseFloat(user.location.coordinates[0]);
+      lat = parseFloat(user.location.coordinates[1]);
     }
-  
-    let automobiles = await Automobile.find({location2: {
+    //  1 mile ==== 1609.34 meter
+    let automobiles = await Automobile.find({location: {
         $near: {
             $geometry:{ 
                 type: "Point", 
                 coordinates: [long, lat],
-                $minDistance: 0,
-                $maxDistance: 500000
+                $minDistance: 0, 
+                $maxDistance: 1609.34 * 25 //meter - 25mile
               }
             }
         }})

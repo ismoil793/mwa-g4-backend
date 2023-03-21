@@ -40,14 +40,14 @@ module.exports.singup = async (req, res, next) => {
       const passHash = await bcrypt.hash(newUser.password, saltRounds);
       newUser.password = passHash;
       //TODO: make it dynamic, Fairfield default long, lat
-      newUser.location2 = { type: "Point", coordinates: [-91.973419,41.006950]}
+      //newUser.location = { type: "Point", coordinates: [-91.973419,41.006950]}
       const result = await newUser.save();
       console.log("new user saved result: ", result);
       res.json(createJWTokenAndResponseData(result));
     } else {
       res.json({
         success: false,
-        data: { msg: "User's email is aready used." },
+        data: { msg: "Email is aready used!!!" },
       });
     }
   } catch (error) {
