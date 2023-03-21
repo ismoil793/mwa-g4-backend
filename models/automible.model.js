@@ -21,19 +21,18 @@ const automobileSchema = new mongoose.Schema(
     state: String,
     city: String,
     zipcode: Number,
-    location: [String, String], //long, lat
-    location2: {
-    type: {
-      type: String, // Don't do `{ location: { type: String } }`
-      enum: ['Point'], // 'location.type' must be 'Point'
-      required: false
+    location: {
+        type: {
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'], // 'location.type' must be 'Point'
+            required: false
+        },
+        coordinates: {
+            type: [Number],
+            required: false,
+            sparse: true,
+        }
     },
-    coordinates: {
-      type: [Number],
-      required: false,
-      sparse: true,
-    }
-  },
     offers: [
       {
         userId: mongoose.Schema.Types.ObjectId,
