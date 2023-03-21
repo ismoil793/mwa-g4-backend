@@ -92,7 +92,11 @@ module.exports.updateUser = async (req, res, next) => {
 function createJWTokenAndResponseData(user) {
   console.log("createJWTokenAndResponseData()", user);
 
-  const userTokenInfo = { _id: user._id, email: user.email, fullname: user.fullname };
+  const userTokenInfo = {
+    _id: user._id, email: user.email,
+    fullname: user.fullname,
+    location: user.location
+  };
 
   userTokenInfo.jwt = jwt.sign({ ...userTokenInfo }, JWT_SIGN_SECRET);
 
