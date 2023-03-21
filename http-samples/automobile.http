@@ -7,7 +7,7 @@ POST http://localhost:3001/api/v1/automobiles
 Content-Type: application/json
 
 {
-  "title": "BMW CL 4 ",
+  "title": "stats test auto",
   "description": "Really good quality car",
   "color": "white",
   "interiorColor": "black",
