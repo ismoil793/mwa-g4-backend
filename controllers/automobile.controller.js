@@ -19,7 +19,7 @@ async function addAutomobile(req, res, next) {
   try {
     const { long, lat, ...payload } = req.body;
     const { _id: ownerId, fullname: fullName } = req.user;
-    const location = { type: "Point", coordinates: [long, lat]}
+    const location = { type: "Point", coordinates: [long, lat] };
     const result = await Automobile.create({
       ...payload,
       owner: { ownerId: new mongoose.Types.ObjectId(ownerId), fullName },
@@ -46,7 +46,7 @@ async function updateAutoById(req, res, next) {
     const { auto_id: autoId } = req.params;
     const { long, lat, ...payload } = req.body;
     const { _id: ownerId, fullname: fullName } = req.user;
-    const location = { type: "Point", coordinates: [long, lat]}
+    const location = { type: "Point", coordinates: [long, lat] };
     const result = await Automobile.updateOne(
       { _id: autoId },
       {
@@ -88,19 +88,10 @@ async function uploadImage(req, res, next) {
 }
 
 async function getMyAutomobiles(req, res, next) {
-  console.log("req.params", req.user);
   const { _id } = req.user;
 
   try {
     const automobiles = await Automobile.find({ "owner.ownerId": _id });
-    res.json({ data: automobiles });
-  } catch (e) {
-    next(e);
-  }
-  const { user_id } = req.params;
-
-  try {
-    const automobiles = await Automobile.find({ "owner.ownerId": user_id });
     res.json({ data: automobiles });
   } catch (e) {
     next(e);
@@ -126,8 +117,10 @@ async function searchAutomobiles(req, res, next) {
   const { search_query } = req.body;
   try {
     console.log("search_query: ", search_query);
-
+    const ownerId = req.user._id;
     const automobiles = await Automobile.find({
+      "owner.ownerId": { $ne: new mongoose.Types.ObjectId(ownerId) },
+      status: { $ne: "Sold" },
       $or: [
         { title: new RegExp(search_query, "gi") },
         { description: new RegExp(search_query, "gi") },
@@ -144,22 +137,22 @@ async function searchAutomobiles(req, res, next) {
 
 async function searchNearByAutomobiles(req, res, next) {
   try {
-      console.log('searchNearByAutomobiles req.user: ', req.user);
-    
+    console.log("searchNearByAutomobiles req.user: ", req.user);
+
     if (!req.user) {
-       console.log('no user data in req.user');
-      return res.json({ data: {msg: "No loggedin user."} })
-    };
+      console.log("no user data in req.user");
+      return res.json({ data: { msg: "No loggedin user." } });
+    }
 
     const user = await Users.findOne({ _id: req.user._id });
     const ownerId = req.user._id;
-  
-    console.log('searchNearByAutomobiles user from db: ', user);
-    console.log('users long-lat: ' + user.location?.coordinates);
 
-    //Fairfield long, lat default 
+    console.log("searchNearByAutomobiles user from db: ", user);
+    console.log("users long-lat: " + user.location?.coordinates);
+
+    //Fairfield long, lat default
     let long = -91.973419;
-    let lat = 41.006950;
+    let lat = 41.00695;
     if (user.location?.coordinates && user.location?.coordinates?.length > 0) {
       long = parseFloat(user.location.coordinates[0]);
       lat = parseFloat(user.location.coordinates[1]);
@@ -174,18 +167,17 @@ async function searchNearByAutomobiles(req, res, next) {
             type: "Point",
             coordinates: [long, lat],
             $minDistance: 0,
-            $maxDistance: 1609.34 * 25 //meter - 25mile
-          }
-        }
+            $maxDistance: 1609.34 * 25, //meter - 25mile
+          },
+        },
       },
-    }
-    )
+    });
 
-    console.log('nearby automobiles: ', automobiles)
+    console.log("nearby automobiles: ", automobiles);
 
     res.json({ data: automobiles });
   } catch (e) {
-    console.log('error: ', e)
+    console.log("error: ", e);
     next(e);
   }
 }
