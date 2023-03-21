@@ -6,14 +6,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDE1MTllY
 POST http://localhost:3001/api/v1/automobiles
 Content-Type: application/json
 
-
 {
-  "title": "Toyota Camry GLE 2009",
+  "title": "BMW CL 4 ",
   "description": "Really good quality car",
   "color": "white",
   "interiorColor": "black",
   "vin": 1234,
-  "type": "Sedan"
+  "type": "Sedan",
+  "long": "-91.973419",
+  "lat": "41.006950",
 }
 
 ###
@@ -32,3 +33,20 @@ GET http://localhost:3001/api/v1/automobiles/6415b4320d4d011d04748b69/offers/641
 GET http://localhost:3001/api/v1/automobiles/purchased
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDE1MTllY2U2ZTEyOGRhODViZDk0NWMiLCJlbWFpbCI6InphbWFuQG1pdS5lZHUiLCJmdWxsbmFtZSI6Im1vbmlyIHphbWFuIiwiaWF0IjoxNjc5MjU3ODg5fQ.7Rp4Rik8e--dPRmxFojBOQHaWM_ss5Sm4oCKijofXe0
 
+# 
+
+#sample lat long
+
+//Fairfield, IA, USA
+//lat: 41.006950, long: -91.973419
+
+//     Ottumwa, IA, USA
+//lat: 41.016621, long: -92.430550.
+
+// Iowa City
+// Longitude: -91.530167
+// Latitude: 41.661129
+
+//Fort Madison 
+//lat 40.629763 and long -91.314535 respectively. 
+# 

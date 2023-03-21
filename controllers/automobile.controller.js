@@ -1,5 +1,6 @@
 const Automobile = require("../models/automible.model");
 const { default: mongoose } = require("mongoose");
+const Users = require("../models/users.model.js");
 
 async function getAllAutomobiles(req, res, next) {
   try {
@@ -140,28 +141,43 @@ async function searchAutomobiles(req, res, next) {
 }
 
 async function searchNearByAutomobiles(req, res, next) {
-  const { long, lat } = req.body;
   try {
-    //TODO: need to implement near by
+      console.log('searchNearByAutomobiles req.user: ', req.user);
+    
+    if (!req.user) {
+       console.log('no user data in req.user');
+      return res.json({ data: {msg: "No loggedin user."} })
+    };
 
-    //Fairfield, IA, USA
-    //Latitude and longitude coordinates are: 41.006950, -91.973419
-    //     Ottumwa, IA, USA
-    // Latitude and longitude coordinates are: 41.016621, -92.430550.
-    // console.log('long: ' + long + ', lat: ' + lat);
-    // const currentLong = "-91.973419"
-    // const currentLat = "41.006950"
-    // const automobiles = await Automobile.find({
-    //   location:
-    //     { $near: [currentLong, currentLat] }
-    // }).limit(20);
+    const user = await Users.findOne({ _id: req.user._id });
+  
+    console.log('searchNearByAutomobiles user from db: ', user);
+    console.log('users long-lat: ' + user.location2.coordinates);
 
-    //TODO: this for testing -- remove this block
-    const automobiles = await Automobile.find({
-      $or: [{ title: new RegExp("Honda", "gi") }],
-    });
+    //Fairfield long, lat default 
+    let long = -91.973419;
+    let lat = 41.006950;
+    if (user.location2.coordinates && user.location2.coordinates.length > 0) {
+      long = parseFloat(user.location2.coordinates[0]);
+      lat = parseFloat(user.location2.coordinates[1]);
+    }
+  
+    let automobiles = await Automobile.find({location2: {
+        $near: {
+            $geometry:{ 
+                type: "Point", 
+                coordinates: [long, lat],
+                $minDistance: 0,
+                $maxDistance: 500000
+              }
+            }
+        }})
+
+    console.log('nearby automobiles: ', automobiles)
+
     res.json({ data: automobiles });
   } catch (e) {
+    console.log('error: ', e)
     next(e);
   }
 }
