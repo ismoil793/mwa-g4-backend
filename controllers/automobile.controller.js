@@ -152,6 +152,7 @@ async function searchNearByAutomobiles(req, res, next) {
     };
 
     const user = await Users.findOne({ _id: req.user._id });
+    const ownerId = req.user._id;
   
     console.log('searchNearByAutomobiles user from db: ', user);
     console.log('users long-lat: ' + user.location?.coordinates);
@@ -164,16 +165,21 @@ async function searchNearByAutomobiles(req, res, next) {
       lat = parseFloat(user.location.coordinates[1]);
     }
     //  1 mile ==== 1609.34 meter
-    let automobiles = await Automobile.find({location: {
+    let automobiles = await Automobile.find({
+      "owner.ownerId": { $ne: new mongoose.Types.ObjectId(ownerId) },
+      status: { $ne: "Sold" },
+      location: {
         $near: {
-            $geometry:{ 
-                type: "Point", 
-                coordinates: [long, lat],
-                $minDistance: 0, 
-                $maxDistance: 1609.34 * 25 //meter - 25mile
-              }
-            }
-        }})
+          $geometry: {
+            type: "Point",
+            coordinates: [long, lat],
+            $minDistance: 0,
+            $maxDistance: 1609.34 * 25 //meter - 25mile
+          }
+        }
+      },
+    }
+    )
 
     console.log('nearby automobiles: ', automobiles)
 
