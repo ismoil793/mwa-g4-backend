@@ -1,12 +1,27 @@
 const Users = require("../models/users.model.js");
+const { updateUser } = require("./users.controllers.js");
 
 module.exports.updateUser = async (req, res, next) => {
   try {
-    const { _id } = req.user;
-    console.log("updateUser() - user_id: ", _id);
-    const result = await Users.find({ _id: _id }, req.body);
+    const { _id } = req.user;    
+    const [longitude, latitude] = req.body.location;
 
-    res.json({ sucess: true, data: result });
+    const updatedUser = {
+      ...req.body,
+      ...{
+        location2: {
+          type: "Point",
+          coordinates: [
+              longitude,
+              latitude
+          ]
+      },
+      }
+    } 
+
+    const result = await Users.updateOne({ _id: _id }, updatedUser);
+
+    res.json({ success: true, data: result });
   } catch (error) {
     next(error);
   }
