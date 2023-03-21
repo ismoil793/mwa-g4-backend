@@ -19,10 +19,11 @@ async function addAutomobile(req, res, next) {
   try {
     const { long, lat, ...payload } = req.body;
     const { _id: ownerId, fullname: fullName } = req.user;
+    const location = { type: "Point", coordinates: [long, lat]}
     const result = await Automobile.create({
       ...payload,
       owner: { ownerId: new mongoose.Types.ObjectId(ownerId), fullName },
-      location: [long, lat],
+      location,
     });
     res.json({ data: result });
   } catch (e) {
@@ -45,12 +46,13 @@ async function updateAutoById(req, res, next) {
     const { auto_id: autoId } = req.params;
     const { long, lat, ...payload } = req.body;
     const { _id: ownerId, fullname: fullName } = req.user;
+    const location = { type: "Point", coordinates: [long, lat]}
     const result = await Automobile.updateOne(
       { _id: autoId },
       {
         _id: autoId,
         ...payload,
-        location: [long, lat],
+        location,
         owner: { ownerId: new mongoose.Types.ObjectId(ownerId), fullName },
       }
     );
