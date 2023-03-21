@@ -15,11 +15,11 @@ module.exports.login = async (req, res, next) => {
     console.log("user found from db: ", user);
 
     //if user does not exists, return by sending response
-    if (!user) {
+    if (user == null || user == undefined) {
       res.json(createInvalidUserResponseData());
     }
     //if user exisits then compare hash and send resonse
-    if (isMatchedPasswordHash(password, user)) {
+    if (user && isMatchedPasswordHash(password, user)) {
       console.log("User's password hash is matched.");
       res.json(createJWTokenAndResponseData(user));
     } else {
@@ -39,6 +39,8 @@ module.exports.singup = async (req, res, next) => {
     if (!isUserExist) {
       const passHash = await bcrypt.hash(newUser.password, saltRounds);
       newUser.password = passHash;
+      //TODO: make it dynamic, Fairfield default long, lat
+      newUser.location2 = { type: "Point", coordinates: [-91.973419,41.006950]}
       const result = await newUser.save();
       console.log("new user saved result: ", result);
       res.json(createJWTokenAndResponseData(result));
