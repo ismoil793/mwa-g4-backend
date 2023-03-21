@@ -6,6 +6,7 @@ async function getAllAutomobiles(req, res, next) {
     const { _id: ownerId } = req.user;
     const automobiles = await Automobile.find({
       "owner.ownerId": { $ne: new mongoose.Types.ObjectId(ownerId) },
+      status: { $ne: "Sold" },
     });
     res.json({ data: automobiles });
   } catch (e) {
